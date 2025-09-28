@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+  body { background: linear-gradient(135deg,#f8ffae,#43c6ac); min-height:100vh; }
+  .recipe-card { background: rgba(255,255,255,0.95); padding:28px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.12); }
+  .recipe-title { font-size:2.6rem; color:#ff4757; font-weight:800; margin-bottom:10px; }
+  .recipe-img { display:block; margin:18px auto; max-width:60%; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.14); }
+  .section-title { font-size:1.3rem; color:#3742fa; margin-top:22px; }
+  .instructions { font-size:1.15rem; line-height:1.8; }
+  .sub-suggest { font-size:0.95rem; }
+</style>
+
+<div class="container my-5">
+  <div class="recipe-card">
+    <h2 class="text-center recipe-title">{{ recipe.name }}</h2>
+
+    <img src="{{ url_for('static', filename=recipe.image) }}" class="recipe-img" alt="{{ recipe.name }}">
+
+    <h4 class="section-title">🥗 Ingredients</h4>
+    <ul class="list-inline">
+      {% for ing in recipe.ingredients %}
+        <li class="list-inline-item badge bg-success fs-6 m-1 p-2">{{ ing }}</li>
+      {% endfor %}
+    </ul>
+
+    <h4 class="section-title">👩‍🍳 Instructions</h4>
+    <div class="instructions alert alert-light shadow-sm">
+      {{ recipe.instructions }}
+    </div>
+
+    <h4 class="section-title">🔎 Ingredient Gap & Substitutions</h4>
+
+    <p class="sub-suggest">When you search from the main page, FlavorGraph shows what you're missing. Here are common substitution ideas:</p>
+
+    <ul>
+      {% set subs = substitutions %}
+      {% set found = false %}
+      {% for ing in recipe.ingredients %}
+        {% set key = ing.lower() %}
+        {% if key in subs %}
+          {% set found = true %}
+          <li><strong>{{ ing }}</strong> → possible substitutes:
+            <span class="badge bg-warning text-dark">{{ subs[key]|join(', ') }}</span>
+          </li>
+        {% endif %}
+      {% endfor %}
+      {% if not found %}
+        <li>No preconfigured substitutions for this recipe's ingredients. You can still swap similar items (e.g., milk → almond milk).</li>
+      {% endif %}
+    </ul>
+
+    <blockquote class="blockquote text-center mt-4">
+      <p class="fst-italic">“{{ recipe.quote }}”</p>
+    </blockquote>
+
+    <div class="text-center mt-3">
+      <a href="{{ url_for('index') }}" class="btn btn-outline-dark me-2">← New Search</a>
+      <a href="{{ url_for('recipe_list') }}" class="btn btn-dark">Back to list</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

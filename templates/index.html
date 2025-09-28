@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-center text-primary mb-4">Welcome to FlavorGraph 🍲</h2>
+    <form action="{{ url_for('recipe_list') }}" method="POST" class="text-center">
+      <label for="ingredients" class="form-label fs-5">Enter Ingredients (comma separated):</label>
+      <input type="text" id="ingredients" name="ingredients" 
+             placeholder="e.g., rice, tomato, onion" 
+             class="form-control mb-3" required>
+      <div class="form-check form-switch d-flex justify-content-center align-items-center gap-3 mb-2">
+        <input class="form-check-input" type="checkbox" id="insightsSwitch" name="insights" checked>
+        <label class="form-check-label" for="insightsSwitch">Show algorithmic insights</label>
+        <label class="ms-3">Max combo:</label>
+        <select name="num_combo" class="form-select w-auto d-inline-block" style="width:80px;">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success btn-lg mt-3">Find Recipes 🚀</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
